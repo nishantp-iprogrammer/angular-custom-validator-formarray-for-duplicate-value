@@ -1,0 +1,44 @@
+<h4 class="bg-primary text-white p-2">Check for duplicate fields</h4>
+<div [formGroup]="formArray">
+  <div
+    class="px-3 py-1"
+    *ngFor="let group of formArray.controls; let i = index"
+    [formGroup]="group"
+  >
+    Value
+    <input formControlName="inputValue" />
+    &nbsp;
+    <button
+      (click)="addgroup()"
+      *ngIf="i === 0"
+      [disabled]="group.get('inputValue').value.length === 0"
+    >
+      Add
+    </button>
+    &nbsp;
+    <button (click)="removegroup(i)" *ngIf="i !== 0">X</button>
+    <small
+      class="d-block text-danger"
+      *ngIf="group.get('inputValue').errors?.duplicated"
+    >
+      <span *ngIf="group.get('inputValue').value !== ''">GSTIN duplicated</span>
+    </small>
+    <small class="d-block text-warning">
+      <span
+        *ngIf="
+          (group.get('inputValue').dirty || group.get('inputValue').touched) &&
+          group.get('inputValue').invalid
+        "
+      >
+        <span *ngIf="group.get('inputValue').value === ''">
+          GSTIN required
+        </span>
+        <span *ngIf="group.get('inputValue').errors?.pattern">
+          Invalid GSTIN
+        </span>
+      </span>
+    </small>
+  </div>
+  <button type="submit" (click)="submit()">submit</button>
+</div>
+<hr />
